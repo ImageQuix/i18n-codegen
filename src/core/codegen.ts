@@ -13,15 +13,13 @@ export const generateCode = (translations: TranslationsDict) => {
   const flat = flattenObject(translations);
   const keys = Object.keys(flat);
 
-  const code = `
+  return `
   export const I18nKeys = [
-    ${keys.map(key => `"${key}"`)}
+    ${keys.map(key => `"${key.replace('.defaultMessage', '')}"`)}
   ] as const;
   
   export type I18nKey = typeof I18nKeys[number];
   `;
-
-  return code.replace('.defaultMessage', '');
 };
 
 export const runCodegen = async (config: I18nCodegenConfig) => {
