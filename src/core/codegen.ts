@@ -14,6 +14,8 @@ export const generateCode = (translations: TranslationsDict) => {
   const keys = Object.keys(flat);
 
   return `
+  // Testing...
+
   export const I18nKeys = [
     ${keys.map(key => `"${key.replace('.defaultMessage', '')}"`)}
   ] as const;
