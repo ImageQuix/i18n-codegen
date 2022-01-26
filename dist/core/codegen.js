@@ -9,8 +9,7 @@ var config_1 = require("./config");
 exports.generateCode = function (translations) {
     var flat = parse_translations_1.flattenObject(translations);
     var keys = Object.keys(flat);
-    var code = "\n  export const I18nKeys = [\n    " + keys.map(function (key) { return "\"" + key + "\""; }) + "\n  ] as const;\n  \n  export type I18nKey = typeof I18nKeys[number];\n  ";
-    return code.replace('.defaultMessage', '');
+    return "\n  // Testing...\n\n  export const I18nKeys = [\n    " + keys.map(function (key) { return "\"" + key.replace('.defaultMessage', '') + "\""; }) + "\n  ] as const;\n  \n  export type I18nKey = typeof I18nKeys[number];\n  ";
 };
 exports.runCodegen = function (config) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
     var translationsFilePath, outputCodePath, translations, code;
