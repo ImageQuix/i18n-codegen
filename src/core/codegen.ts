@@ -9,13 +9,23 @@ interface TranslationsDict {
 
 export type TranslationKeys = string[];
 
-export const generateCode = (translations: TranslationsDict) => {
+export const generateCode = (
+  translations: TranslationsDict,
+  config: I18nCodegenConfig
+) => {
   const flat = flattenObject(translations);
   const keys = Object.keys(flat);
+  const library = config.library?.toLowerCase();
+
+  const generatedKeys = `${keys.map(key => {
+    if (library === 'formatjs' || library === 'react-intl')
+      return key.replace('.defaultMessage', '');
+    else return key;
+  })}`;
 
   return `
   export const I18nKeys = [
-    ${keys.map(key => `"${key.replace('.defaultMessage', '')}"`)}
+    ${generatedKeys}
   ] as const;
   
   export type I18nKey = typeof I18nKeys[number];
@@ -38,7 +48,7 @@ export const runCodegen = async (config: I18nCodegenConfig) => {
 
   // Codegen
   const translations = require(translationsFilePath) as TranslationsDict;
-  const code = generateCode(translations);
+  const code = generateCode(translations, config);
 
   await fs.writeFile(outputCodePath, code, {
     encoding: 'utf-8',

@@ -6,10 +6,18 @@ var fs_extra_1 = tslib_1.__importDefault(require("fs-extra"));
 var path_1 = tslib_1.__importDefault(require("path"));
 var parse_translations_1 = require("../util/parse-translations");
 var config_1 = require("./config");
-exports.generateCode = function (translations) {
+exports.generateCode = function (translations, config) {
+    var _a;
     var flat = parse_translations_1.flattenObject(translations);
     var keys = Object.keys(flat);
-    return "\n  export const I18nKeys = [\n    " + keys.map(function (key) { return "\"" + key.replace('.defaultMessage', '') + "\""; }) + "\n  ] as const;\n  \n  export type I18nKey = typeof I18nKeys[number];\n  ";
+    var library = (_a = config.library) === null || _a === void 0 ? void 0 : _a.toLowerCase();
+    var generatedKeys = "" + keys.map(function (key) {
+        if (library === 'formatjs' || library === 'react-intl')
+            return key.replace('.defaultMessage', '');
+        else
+            return key;
+    });
+    return "\n  export const I18nKeys = [\n    " + generatedKeys + "\n  ] as const;\n  \n  export type I18nKey = typeof I18nKeys[number];\n  ";
 };
 exports.runCodegen = function (config) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
     var translationsFilePath, outputCodePath, translations, code;
@@ -26,7 +34,7 @@ exports.runCodegen = function (config) { return tslib_1.__awaiter(void 0, void 0
                 // Clean cache
                 delete require.cache[translationsFilePath]; // Deleting loaded module
                 translations = require(translationsFilePath);
-                code = exports.generateCode(translations);
+                code = exports.generateCode(translations, config);
                 return [4 /*yield*/, fs_extra_1["default"].writeFile(outputCodePath, code, {
                         encoding: 'utf-8',
                         flag: 'w'

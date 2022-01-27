@@ -1,6 +1,7 @@
 export interface I18nCodegenConfig {
     translationsFilePath: string;
     outputFilePath: string;
+    library?: string;
 }
 /**
  * Package's root dir
