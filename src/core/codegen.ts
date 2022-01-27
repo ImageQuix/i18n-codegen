@@ -19,8 +19,8 @@ export const generateCode = (
 
   const generatedKeys = `${keys.map(key => {
     if (library === 'formatjs' || library === 'react-intl')
-      return key.replace('.defaultMessage', '');
-    else return key;
+      return `"${key.replace('.defaultMessage', '')}"`;
+    else return `"${key}"`;
   })}`;
 
   return `

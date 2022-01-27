@@ -13,9 +13,9 @@ exports.generateCode = function (translations, config) {
     var library = (_a = config.library) === null || _a === void 0 ? void 0 : _a.toLowerCase();
     var generatedKeys = "" + keys.map(function (key) {
         if (library === 'formatjs' || library === 'react-intl')
-            return key.replace('.defaultMessage', '');
+            return "\"" + key.replace('.defaultMessage', '') + "\"";
         else
-            return key;
+            return "\"" + key + "\"";
     });
     return "\n  export const I18nKeys = [\n    " + generatedKeys + "\n  ] as const;\n  \n  export type I18nKey = typeof I18nKeys[number];\n  ";
 };
