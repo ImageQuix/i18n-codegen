@@ -3,6 +3,7 @@ import path from 'path';
 export interface I18nCodegenConfig {
   translationsFilePath: string;
   outputFilePath: string;
+  library?: string;
 }
 
 /**

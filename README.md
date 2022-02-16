@@ -53,6 +53,8 @@ export type I18nKey = typeof I18nKeys[number];
 
 ```js
 module.exports = {
+  // Your translation library (e.g. react-i18next, react-intl, formatjs)
+  library: 'react-i18next',
   // Your main translation file
   translationsFilePath: './src/locales/en_US.json',
   // Output of the generated types
